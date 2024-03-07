@@ -14,26 +14,27 @@ import SqlHandler
 '''
 class CredentialHandler:
     '''
-        initializes the hashing and SqlHandler objects when
+        initializes the SqlHandler objects when
         the class is initialized
     '''
     def __init__(self):
-        self.sha256 = hashlib.sha256()
         self.sqlHanlder = SqlHandler.SqlHandler()
 
     '''
         takes a credential and encrypts it using the hashlib library
     '''
     def encrypt(self, credential):
-        self.sha256.update(credential.encode())
-        return self.sha256.hexdigest()
+        sha256 = hashlib.sha256()
+        sha256.update(credential.encode())
+        return sha256.hexdigest()
 
     '''
         takes and email and password, encrypts them, and sends them to the sqlHandler
         to update the values in the database
+        does not call the changes to be commited
     '''
-    def updateCredentials(self, email, password):
-        self.sqlHanlder.updateTable(self.encrypt(email), self.encrypt(password))
+    def insertCredentials(self, email, password):
+        self.sqlHanlder.insertNoSave(self.encrypt(email), self.encrypt(password))
 
     '''
         reads every line of a file where the usernames and passwords are split by a ':'
@@ -51,7 +52,7 @@ class CredentialHandler:
                 email, password = line.split(':')
                 # need to remove endline character from password
                 password = password[:-1]
-                self.updateCredentials(email, password)
+                self.insertCredentials(email, password)
             except ValueError:
                 print("Error in format at line " + str(counter))
 
@@ -60,5 +61,7 @@ class CredentialHandler:
         updates the values of each set of credentials in the database
     '''
     def readCredentialFiles(self, credentialFiles = ['credentials1.txt', 'credentials2.txt'], fileFormat = 'utf8'):
+        self.sqlHanlder.resetTable()
         for file in credentialFiles:
             self.readCredentialFile(file, fileFormat)
+        self.sqlHanlder.saveChanges()
