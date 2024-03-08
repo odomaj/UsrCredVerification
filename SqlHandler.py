@@ -61,7 +61,7 @@ class SqlHandler:
 
     
     def firstTen(self):
-        self.cursor.execute("SELECT *FROM CREDS LIMIT 10;")
+        self.cursor.execute("SELECT *FROM USERS LIMIT 10;")
         result = self.cursor.fetchall()
         for row in result:
             print(row)
@@ -69,5 +69,5 @@ class SqlHandler:
 
 
     def tableLength(self):
-        numRows = self.cursor.execute("SELECT count(*) FROM CREDS;").fetchall()
+        numRows = self.cursor.execute("SELECT COUNT(*) FROM USERS;").fetchall()
         print (numRows)

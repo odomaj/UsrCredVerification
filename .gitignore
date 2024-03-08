@@ -1,4 +1,4 @@
-*.db
+*.db*
 credentials1.txt
 credentials2.txt
 __pycache__/*

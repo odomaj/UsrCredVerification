@@ -18,7 +18,7 @@ class CredentialHandler:
         the class is initialized
     '''
     def __init__(self):
-        self.sqlHanlder = SqlHandler.SqlHandler()
+        self.sqlHandler = SqlHandler.SqlHandler()
 
     '''
         takes a credential and encrypts it using the hashlib library
@@ -34,7 +34,7 @@ class CredentialHandler:
         does not call the changes to be commited
     '''
     def insertCredentials(self, email, password):
-        self.sqlHanlder.insertNoSave(self.encrypt(email), self.encrypt(password))
+        self.sqlHandler.insertNoSave(self.encrypt(email), self.encrypt(password))
 
     '''
         reads every line of a file where the usernames and passwords are split by a ':'
@@ -61,9 +61,9 @@ class CredentialHandler:
         updates the values of each set of credentials in the database
     '''
     def readCredentialFiles(self, credentialFiles = ['credentials1.txt', 'credentials2.txt'], fileFormat = 'utf8'):
-        self.sqlHanlder.resetTable()
+        self.sqlHandler.resetTable()
         for file in credentialFiles:
             self.readCredentialFile(file, fileFormat)
-        self.sqlHanlder.saveChanges()
+        self.sqlHandler.saveChanges()
         self.sqlHandler.tableLength()
         self.sqlHandler.firstTen()
