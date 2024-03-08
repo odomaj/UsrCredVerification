@@ -65,3 +65,5 @@ class CredentialHandler:
         for file in credentialFiles:
             self.readCredentialFile(file, fileFormat)
         self.sqlHanlder.saveChanges()
+        self.sqlHandler.tableLength()
+        self.sqlHandler.firstTen()

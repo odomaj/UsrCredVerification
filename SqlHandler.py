@@ -58,3 +58,16 @@ class SqlHandler:
     '''
     def existInTable(self, email, password):
         return self.cursor.execute("SELECT COUNT(1) FROM USERS WHERE EMAIL='" + email + "' AND PASSWORD='" + password + "'").fetchall()[0][0]
+
+    
+    def firstTen(self):
+        self.cursor.execute("SELECT *FROM CREDS LIMIT 10;")
+        result = self.cursor.fetchall()
+        for row in result:
+            print(row)
+            print("\n")
+
+
+    def tableLength(self):
+        numRows = self.cursor.execute("SELECT count(*) FROM CREDS;").fetchall()
+        print (numRows)
