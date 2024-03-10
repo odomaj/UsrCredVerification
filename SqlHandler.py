@@ -1,5 +1,5 @@
 '''
-    SqlHandler.py made by Alexander Odom and Megan Edwards in March 2024
+    SqlHandler.py made by Alexander Odom in March 2024
     used for Project 1 in CS 444, Spring 2024
 
     contains SqlHandler class, which handles SQL queries
