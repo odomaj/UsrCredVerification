@@ -7,6 +7,7 @@
 
 import hashlib
 import SqlHandler
+import CredentialHolder
 
 '''
     CredentialHandler class handles all interactions with files that contain credential information
@@ -18,7 +19,8 @@ class CredentialHandler:
         the class is initialized
     '''
     def __init__(self):
-        self.sqlHandler = SqlHandler.SqlHandler()
+        #self.sqlHandler = SqlHandler.SqlHandler()
+        self.credentialHolder = CredentialHolder.CredentialHolder()
 
     '''
         takes a credential and encrypts it using the hashlib library
@@ -34,7 +36,14 @@ class CredentialHandler:
         does not call the changes to be commited
     '''
     def insertCredentials(self, email, password):
-        self.sqlHandler.insertNoSave(self.encrypt(email), self.encrypt(password))
+        #self.sqlHandler.insertNoSave(self.encrypt(email), self.encrypt(password))
+        self.credentialHolder.insert(self.encrypt(email), self.encrypt(password))
+
+    def splitCredentials(self, line):
+        email, password = line.split(':')
+        # need to remove enline character
+        password = password[:-1]
+        return email, password
 
     '''
         reads every line of a file where the usernames and passwords are split by a ':'
@@ -49,21 +58,21 @@ class CredentialHandler:
             if not line:
                 break
             try:
-                email, password = line.split(':')
-                # need to remove endline character from password
-                password = password[:-1]
+                email, password = self.splitCredentials(line)
                 self.insertCredentials(email, password)
             except ValueError:
-                print("Error in format at line " + str(counter))
+                #print("Error in format at line " + str(counter))
+                pass
 
     '''
         reads every line of all files where the usernames and passwords are split by a ':'
         updates the values of each set of credentials in the database
     '''
     def readCredentialFiles(self, credentialFiles = ['credentials1.txt', 'credentials2.txt'], fileFormat = 'utf8'):
-        self.sqlHandler.resetTable()
+        #self.sqlHandler.resetTable()
         for file in credentialFiles:
             self.readCredentialFile(file, fileFormat)
-        self.sqlHandler.saveChanges()
-        self.sqlHandler.tableLength()
-        self.sqlHandler.firstTen()
+        #self.sqlHandler.saveChanges()
+        #print(self.credentialHolder.len)
+        #self.sqlHandler.tableLength()
+        #self.sqlHandler.firstTen()
