@@ -6,16 +6,15 @@
 '''
 
 import hashlib
-import SqlHandler
 import CredentialHolder
 
 '''
     CredentialHandler class handles all interactions with files that contain credential information
-    reads files, and utilizes the SqlHandler class to update the database with the new information
+    reads files, and utilizes the CredntialHolder class to update the dictionary with the new information
 '''
 class CredentialHandler:
     '''
-        initializes the SqlHandler objects when
+        initializes the CredentialHolder object when
         the class is initialized
     '''
     def __init__(self):
@@ -31,9 +30,8 @@ class CredentialHandler:
         return sha256.hexdigest()
 
     '''
-        takes and email and password, encrypts them, and sends them to the sqlHandler
-        to update the values in the database
-        does not call the changes to be commited
+        takes and email and password, encrypts them, and sends them to the CredentialHolder
+        to update the values in the dictionary
     '''
     def insertCredentials(self, email, password):
         #self.sqlHandler.insertNoSave(self.encrypt(email), self.encrypt(password))
@@ -47,7 +45,7 @@ class CredentialHandler:
 
     '''
         reads every line of a file where the usernames and passwords are split by a ':'
-        updates the values of each set of credentials in the database
+        updates the values of each set of credentials in the dictionary
     '''
     def readCredentialFile(self, credentialFile, fileFormat):
         file = open(credentialFile, encoding = fileFormat, mode = 'r')
@@ -66,7 +64,7 @@ class CredentialHandler:
 
     '''
         reads every line of all files where the usernames and passwords are split by a ':'
-        updates the values of each set of credentials in the database
+        updates the values of each set of credentials in the dictionary
     '''
     def readCredentialFiles(self, credentialFiles = ['credentials1.txt', 'credentials2.txt'], fileFormat = 'utf8'):
         #self.sqlHandler.resetTable()
