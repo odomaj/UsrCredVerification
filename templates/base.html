@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <title>Breached Creds</title>
+    </head>
+    <body>
+        <div>
+            <h1>Enter credentials to see if they have been stolen</h1>
+        </div>
+        <div>
+            <form id="credsForm">
+                <label for = "email">Email:</label><br>
+                <input type = "text" id = "email" name = "email"><br>
+                <label for = "password">Password:</label><br>
+                <input type = "text" id = "password" name = "password"><br>
+                <button type="submit" onclick ="displayText()">Submit</button>
+            </form>
+
+            <div id = "result" style="display:none;">
+                You have clicked submit
+            </div>
+
+            <script>
+                function displayText()
+                {
+                    var text = document.getElementById("result")
+                    text.style.display = "block";
+                }
+            </script>
+        </div>
+    </body>
+</html>
