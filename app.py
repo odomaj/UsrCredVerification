@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, jsonify
 import CredentialHandler
-
+import time
 
 app = Flask(__name__)
 
 enteredCreds = CredentialHandler.CredentialHandler()
 print('loading compromised credentials...')
+loadStartTime = time.time()
 enteredCreds.readCredentialFiles()
-print('finished reading credentials')
+loadEndTime = time.time()
+print('finished reading credentials in ' + str(loadEndTime - loadStartTime) + ' seconds')
 
 @app.route("/", methods = ["GET", "POST"])
 def gfg():
@@ -21,9 +23,12 @@ def gfg():
         email = enteredCreds.encrypt(email)
         password = enteredCreds.encrypt(password)
 
-        if enteredCreds.credentialsExist(email, password):
-            return "The entered credentials have been compromised"
-        return "The entered credentials are not on our list of compromised credentials"
+        startTime = time.time()
+        credentialsExist = enteredCreds.credentialsExist(email, password)
+        endTime = time.time()
+        if credentialsExist:
+            return 'The entered credentials have been compromised. (result found in ' + str((endTime - startTime) * 1000) + ' milliseconds)'
+        return 'The entered credentials are not on our list of compromised credentials. (result found in ' + str((endTime - startTime) * 1000) + ' milliseconds)'
     return render_template("base.html")
 
 if __name__ == "__main__":

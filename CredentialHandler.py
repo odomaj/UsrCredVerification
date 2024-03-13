@@ -18,7 +18,6 @@ class CredentialHandler:
         the class is initialized
     '''
     def __init__(self):
-        #self.sqlHandler = SqlHandler.SqlHandler()
         self.credentialHolder = CredentialHolder.CredentialHolder()
 
     '''
@@ -34,7 +33,6 @@ class CredentialHandler:
         to update the values in the dictionary
     '''
     def insertCredentials(self, email, password):
-        #self.sqlHandler.insertNoSave(self.encrypt(email), self.encrypt(password))
         self.credentialHolder.insert(self.encrypt(email), self.encrypt(password))
 
     def splitCredentials(self, line):
@@ -59,7 +57,6 @@ class CredentialHandler:
                 email, password = self.splitCredentials(line)
                 self.insertCredentials(email, password)
             except ValueError:
-                #print("Error in format at line " + str(counter))
                 pass
 
     '''
@@ -67,13 +64,8 @@ class CredentialHandler:
         updates the values of each set of credentials in the dictionary
     '''
     def readCredentialFiles(self, credentialFiles = ['credentials1.txt', 'credentials2.txt'], fileFormat = 'utf8'):
-        #self.sqlHandler.resetTable()
         for file in credentialFiles:
             self.readCredentialFile(file, fileFormat)
-        #self.sqlHandler.saveChanges()
-        #print(self.credentialHolder.len)
-        #self.sqlHandler.tableLength()
-        #self.sqlHandler.firstTen()
             
     def credentialsExist(self, encryptedUsername, encryptedPassword):
         return self.credentialHolder.exists(encryptedUsername, encryptedPassword)
