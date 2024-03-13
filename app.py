@@ -5,7 +5,10 @@ import CredentialHandler
 app = Flask(__name__)
 
 enteredCreds = CredentialHandler.CredentialHandler()
-    
+print('loading compromised credentials...')
+enteredCreds.readCredentialFiles()
+print('finished reading credentials')
+
 @app.route("/", methods = ["GET", "POST"])
 def gfg():
     if request.method == "POST":
@@ -18,7 +21,9 @@ def gfg():
         email = enteredCreds.encrypt(email)
         password = enteredCreds.encrypt(password)
 
-        return "Your credentials are: " + email + " " + password
+        if enteredCreds.credentialsExist(email, password):
+            return "The entered credentials have been compromised"
+        return "The entered credentials are not on our list of compromised credentials"
     return render_template("base.html")
 
 if __name__ == "__main__":

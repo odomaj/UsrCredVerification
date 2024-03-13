@@ -74,3 +74,6 @@ class CredentialHandler:
         #print(self.credentialHolder.len)
         #self.sqlHandler.tableLength()
         #self.sqlHandler.firstTen()
+            
+    def credentialsExist(self, encryptedUsername, encryptedPassword):
+        return self.credentialHolder.exists(encryptedUsername, encryptedPassword)
